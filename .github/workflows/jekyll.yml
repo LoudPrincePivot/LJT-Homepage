@@ -28,19 +28,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7.0.1
-      - name: Enable GitHub Pages for workflow builds
-        run: |
-          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X PUT \
-            -H "Authorization: Bearer $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/${{ github.repository }}/pages \
-            -d '{"build_type": "workflow"}')
-          echo "$RESPONSE"
-          STATUS=$(echo "$RESPONSE" | grep -o "HTTP_STATUS:[0-9]*" | cut -d: -f2)
-          if [ "$STATUS" != "201" ] && [ "$STATUS" != "204" ]; then
-            echo "Pages enable failed with status $STATUS"
-            exit 1
-          fi
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
